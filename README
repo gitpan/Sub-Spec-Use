@@ -1,0 +1,62 @@
+NAME
+    Sub::Spec::Use - Load a module specified using Sub::Spec URI
+
+VERSION
+    version 0.01
+
+SYNOPSIS
+     use Sub::Spec::Use "http://example.com/My::Math" => qw(pyth);
+     print pyth(3, 4); # 5
+
+     use Sub::Spec::Use "http://example.com/My::Math" => qw(:all);
+
+DESCRIPTION
+    This module provides load_ss_module(), usually used as shown in
+    Synopsis, a la Perl's use().
+
+    This module uses Log::Any for logging.
+
+FUNCTIONS
+    None are exported.
+
+  load_ss_module(%args) -> [STATUS_CODE, ERR_MSG, RESULT]
+    Load a module specified using Sub::Spec URI.
+
+    "Load" a module specified by using Sub::Spec::URI (e.g. pm://Foo::Bar or
+    http://example.com/Foo::Bar). Actually, what is being done is query the
+    remote URI for available functions, and for each function, create a
+    proxy (and get its spec from the URI, if available). The proxy function
+    will then call the remote function.
+
+    Returns a 3-element arrayref. STATUS_CODE is 200 on success, or an error
+    code between 3xx-5xx (just like in HTTP). ERR_MSG is a string containing
+    error message, RESULT is the actual result.
+
+    Arguments ("*" denotes required arguments):
+
+    *   into => *str*
+
+        Package name to put proxy functions into.
+
+        Default is to be determined from URI. For example, if URI is
+        pm://Foo::Bar, then 'into' will be set to 'Foo::Bar'.
+
+    *   uri* => *str*
+
+        Location of module.
+
+TODO
+    * Can't work with other server URI's except pm://
+
+SEE ALSO
+    Sub::Spec
+
+AUTHOR
+    Steven Haryanto <stevenharyanto@gmail.com>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2011 by Steven Haryanto.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
